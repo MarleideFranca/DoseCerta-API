@@ -8,3 +8,9 @@ npm install swagger-ui-express swagger-jsdoc - Documentação do BackEnd
 
 
 npm run dev - Rodar o projeto
+
+npx knex migrate:latest - criar/rodar as migrations
+npm run migrate - testar as migrations
+npm run seed - testar as seeds
+
+

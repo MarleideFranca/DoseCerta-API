@@ -1,52 +1,60 @@
-const db = require("../data/db");
+const service = require("../services/vacinasService");
 
 module.exports = {
-  listar(req, res) {
-    res.json(db.vacinas);
-  },
-
-  buscarPorId(req, res) {
-    const id = Number(req.params.id);
-    const item = db.vacinas.find(v => v.id === id);
-
-    if (!item) {
-      return res.status(404).json({ error: "Vacina não encontrada" });
+  async listar(req, res) {
+    try {
+      const rows = await service.listar();
+      res.json(rows);
+    } catch (err) {
+      console.error(err);
+      res.status(500).json({ error: "Erro ao listar vacinas" });
     }
-
-    res.json(item);
   },
 
-  criar(req, res) {
-    const novo = {
-      id: db.vacinas.length + 1,
-      ...req.body
-    };
-
-    db.vacinas.push(novo);
-    res.status(201).json(novo);
-  },
-
-  atualizar(req, res) {
-    const id = Number(req.params.id);
-    const index = db.vacinas.findIndex(v => v.id === id);
-
-    if (index === -1) {
-      return res.status(404).json({ error: "Vacina não encontrada" });
+  async buscarPorId(req, res) {
+    try {
+      const item = await service.buscarPorId(req.params.id);
+      if (!item) return res.status(404).json({ error: "Vacina não encontrada" });
+      res.json(item);
+    } catch (err) {
+      console.error(err);
+      res.status(500).json({ error: "Erro ao buscar vacina" });
     }
-
-    db.vacinas[index] = { id, ...req.body };
-    res.json(db.vacinas[index]);
   },
 
-  deletar(req, res) {
-    const id = Number(req.params.id);
-    const index = db.vacinas.findIndex(v => v.id === id);
-
-    if (index === -1) {
-      return res.status(404).json({ error: "Vacina não encontrada" });
+  async criar(req, res) {
+    try {
+      const criado = await service.criar(req.body);
+      res.status(201).json(criado);
+    } catch (err) {
+      console.error(err);
+      res.status(500).json({ error: "Erro ao criar vacina" });
     }
+  },
 
-    db.vacinas.splice(index, 1);
-    res.status(204).send();
+  async atualizar(req, res) {
+    try {
+      const existe = await service.buscarPorId(req.params.id);
+      if (!existe) return res.status(404).json({ error: "Vacina não encontrada" });
+
+      const atualizado = await service.atualizar(req.params.id, req.body);
+      res.json(atualizado);
+    } catch (err) {
+      console.error(err);
+      res.status(500).json({ error: "Erro ao atualizar vacina" });
+    }
+  },
+
+  async deletar(req, res) {
+    try {
+      const existe = await service.buscarPorId(req.params.id);
+      if (!existe) return res.status(404).json({ error: "Vacina não encontrada" });
+
+      await service.deletar(req.params.id);
+      res.status(204).send();
+    } catch (err) {
+      console.error(err);
+      res.status(500).json({ error: "Erro ao deletar vacina" });
+    }
   }
 };

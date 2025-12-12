@@ -5,6 +5,8 @@ const profissionaisRoutes = require("./routes/profissionaisRoutes");
 const unidadesRoutes = require("./routes/unidadesRoutes");
 const vacinasRoutes = require("./routes/vacinasRoutes");
 const transferenciasRoutes = require("./routes/transferenciasRoutes");
+const dosesRoutes = require("./routes/dosesRoutes");
+const agendamentosRoutes = require("./routes/agendamentosRoutes");
 
 // Implementando a documentação do BackEnd
 const swaggerDocs = require("./config/swagger");
@@ -18,6 +20,8 @@ app.use("/profissionais", profissionaisRoutes);
 app.use("/unidades", unidadesRoutes);
 app.use("/vacinas", vacinasRoutes);
 app.use("/transferencias", transferenciasRoutes);
+app.use("/doses", dosesRoutes);
+app.use("/agendamentos", agendamentosRoutes);
 
 // Rota inicial
 app.get("/", (req, res) => {
