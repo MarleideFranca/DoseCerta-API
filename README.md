@@ -110,11 +110,12 @@ npm run seed
 
 ---
 
-## 🖼️ Interface da aplicação
+## 🖥️ Interface da Aplicação
 
-```md
-![DoseCerta](./assets/DoseCerta.JPG)
-```
+<p align="center">
+  <img src="assets/DoseCerta.JPG" alt="Tela inicial do DoseCerta" width="700">
+</p>
+
 ---
 
 ## 🎯 Lições aprendidas
