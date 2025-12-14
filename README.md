@@ -1,10 +1,10 @@
-# 📦 DoseCerta API
+# DoseCerta API
 
 API backend do projeto **DoseCerta**, desenvolvida em **Node.js** com **Express**, banco de dados **MySQL** e **Knex.js** para migrations e seeds. O projeto segue uma arquitetura organizada em **controllers**, **services** e **routes**, com documentação via **Swagger**.
 
 ---
 
-## 🚀 Tecnologias utilizadas
+## Tecnologias utilizadas
 
 * Node.js
 * Express
@@ -16,7 +16,7 @@ API backend do projeto **DoseCerta**, desenvolvida em **Node.js** com **Express*
 * CORS
 
 
-## ⚙️ Inicialização do projeto
+## Inicialização do projeto
 
 ### 1️⃣ Criar o projeto Node.js
 
@@ -24,9 +24,8 @@ API backend do projeto **DoseCerta**, desenvolvida em **Node.js** com **Express*
 npm init
 ```
 
----
 
-## 📦 Instalação de dependências
+## Instalação de dependências
 
 ### Dependências principais
 
@@ -100,17 +99,7 @@ npm run seed
 
 ---
 
-## 📌 Funcionalidades principais
-
-* CRUD de Vacinas
-* CRUD de Unidades
-* CRUD de Transferências
-* Tratamento de erros (400, 404, 409, 500)
-* Documentação automática com Swagger
-
----
-
-## 🖥️ Interface da Aplicação
+##  Interface da Aplicação
 
 <p align="center">
   <img src="assets/DoseCerta.JPG" alt="Tela inicial do DoseCerta" width="700">
@@ -118,7 +107,7 @@ npm run seed
 
 ---
 
-## 🎯 Lições aprendidas
+##  Lições aprendidas
 
 Durante o desenvolvimento deste projeto, foram trabalhadas e aprimoradas as seguintes competências:
 
@@ -128,7 +117,7 @@ Durante o desenvolvimento deste projeto, foram trabalhadas e aprimoradas as segu
 
 ---
 
-## 💉 Importância da aplicação
+##  Importância da aplicação
 
 O sistema **DoseCerta** contribui para a **otimização do controle de vacinas**, permitindo:
 
@@ -168,19 +157,5 @@ O sistema **DoseCerta** contribui para a **otimização do controle de vacinas**
 
 
 
-npm init - cria o projeto node.js
-
-Dependências:
-npm install express
-npm install --save-dev nodemon
-npm install cors dotenv - Dependências
-npm install swagger-ui-express swagger-jsdoc - Documentação do BackEnd
-
-
-npm run dev - Rodar o projeto
-
-npx knex migrate:latest - criar/rodar as migrations
-npm run migrate - testar as migrations
-npm run seed - testar as seeds
 
 
