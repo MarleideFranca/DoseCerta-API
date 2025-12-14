@@ -45,16 +45,29 @@ module.exports = {
     }
   },
 
+  //Metodo deletar com tratamento de erros (err0 500)
   async deletar(req, res) {
-    try {
-      const existe = await service.buscarPorId(req.params.id);
-      if (!existe) return res.status(404).json({ error: "Unidade não encontrada" });
-
-      await service.deletar(req.params.id);
-      res.status(204).send();
-    } catch (err) {
-      console.error(err);
-      res.status(500).json({ error: "Erro ao deletar unidade" });
+  try {
+    const existe = await service.buscarPorId(req.params.id);
+    if (!existe) {
+      return res.status(404).json({ error: "Unidade não encontrada" });
     }
+
+    await service.deletar(req.params.id);
+    return res.status(204).send();
+  } catch (err) {
+    //  FK: unidade vinculada a transferências
+    if (err.code === 'ER_ROW_IS_REFERENCED_2') {
+      return res.status(409).json({
+        error:
+          'Não é possível excluir a unidade porque existem transferências vinculadas a ela.'
+      });
+    }
+
+    console.error(err);
+    return res.status(500).json({ error: "Erro ao deletar unidade" });
   }
+}
+
+
 };
