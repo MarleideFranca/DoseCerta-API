@@ -13,8 +13,10 @@ module.exports = {
 
   async buscarPorId(req, res) {
     try {
-      const item = await service.buscarPorId(req.params.id);
-      if (!item) return res.status(404).json({ error: "Unidade não encontrada" });
+      const item = await service.buscarPorId(Number(req.params.id));
+      if (!item) {
+        return res.status(404).json({ error: "Unidade não encontrada" });
+      }
       res.json(item);
     } catch (err) {
       console.error(err);
@@ -34,40 +36,58 @@ module.exports = {
 
   async atualizar(req, res) {
     try {
-      const existe = await service.buscarPorId(req.params.id);
-      if (!existe) return res.status(404).json({ error: "Unidade não encontrada" });
+      const id = Number(req.params.id);
 
-      const atualizado = await service.atualizar(req.params.id, req.body);
-      res.json(atualizado);
+      const existe = await service.buscarPorId(id);
+      if (!existe) {
+        return res.status(404).json({ error: "Unidade não encontrada" });
+      }
+
+      // remove id do body para evitar update da PK
+      const { id: _, ...dados } = req.body;
+
+      const linhasAfetadas = await service.atualizar(id, dados);
+
+      if (!linhasAfetadas) {
+        return res.status(400).json({
+          error: "Nenhuma alteração realizada"
+        });
+      }
+
+      return res.json({
+        message: "Unidade atualizada com sucesso"
+      });
+
     } catch (err) {
       console.error(err);
-      res.status(500).json({ error: "Erro ao atualizar unidade" });
+      return res.status(500).json({ error: "Erro ao atualizar unidade" });
     }
   },
 
-  //Metodo deletar com tratamento de erros (err0 500)
+  // Método deletar com tratamento de FK
   async deletar(req, res) {
-  try {
-    const existe = await service.buscarPorId(req.params.id);
-    if (!existe) {
-      return res.status(404).json({ error: "Unidade não encontrada" });
-    }
+    try {
+      const id = Number(req.params.id);
 
-    await service.deletar(req.params.id);
-    return res.status(204).send();
-  } catch (err) {
-    //  FK: unidade vinculada a transferências
-    if (err.code === 'ER_ROW_IS_REFERENCED_2') {
-      return res.status(409).json({
-        error:
-          'Não é possível excluir a unidade porque existem transferências vinculadas a ela.'
-      });
-    }
+      const existe = await service.buscarPorId(id);
+      if (!existe) {
+        return res.status(404).json({ error: "Unidade não encontrada" });
+      }
 
-    console.error(err);
-    return res.status(500).json({ error: "Erro ao deletar unidade" });
+      await service.deletar(id);
+      return res.status(204).send();
+
+    } catch (err) {
+      // FK: unidade vinculada a transferências
+      if (err.code === "ER_ROW_IS_REFERENCED_2") {
+        return res.status(409).json({
+          error:
+            "Não é possível excluir a unidade porque existem transferências vinculadas a ela."
+        });
+      }
+
+      console.error(err);
+      return res.status(500).json({ error: "Erro ao deletar unidade" });
+    }
   }
-}
-
-
 };
