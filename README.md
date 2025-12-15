@@ -70,7 +70,7 @@ http://localhost:3001/api-docs
 
 ---
 
-## 🗄️ Banco de dados (Knex)
+## Banco de dados (Knex)
 
 ### Instalação do Banco de Dados MySQL
 

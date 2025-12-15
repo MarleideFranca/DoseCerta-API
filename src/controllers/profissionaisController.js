@@ -24,10 +24,13 @@ module.exports = {
 
   async criar(req, res) {
     try {
+      
+    console.log("BODY RECEBIDO:", req.body); // Teste para postmam
+    
       const criado = await service.criar(req.body);
       res.status(201).json(criado);
     } catch (err) {
-      console.error(err);
+      console.error("ERRO REAL:",err); //ERRo REAL implementado para teste no postmam
       res.status(500).json({ error: "Erro ao criar profissional" });
     }
   },
